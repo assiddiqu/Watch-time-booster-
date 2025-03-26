@@ -1,3 +1,26 @@
+// Firebase Config
+const firebaseConfig = {
+    apiKey: "AIzaSyABa8ERq4kkvqbkzHgJ_cXJVW-F-U-wbyU",
+    authDomain: "dork-hub.firebaseapp.com",
+    databaseURL: "https://dork-hub-default-rtdb.firebaseio.com",
+    projectId: "dork-hub",
+    storageBucket: "dork-hub.firebasestorage.app",
+    messagingSenderId: "143650381570",
+    appId: "1:143650381570:web:961e22f165dcd29e0b2c1b"
+};
+firebase.initializeApp(firebaseConfig);
+
+// Function to Log Views
+function logWebsiteVisit() {
+    const db = firebase.database();
+    const visitRef = db.ref('visits');
+    visitRef.push({
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent
+    });
+}
+
+logWebsiteVisit();
 // Load YouTube API
 var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
