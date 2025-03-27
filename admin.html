@@ -1,18 +1,35 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Admin Panel - Website Stats</title>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        .login-box { width: 300px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; }
+        button { padding: 10px 20px; background-color: green; color: white; border: none; cursor: pointer; }
+    </style>
 </head>
 <body>
-    <h1>Website Analytics</h1>
-    <p>Total Visits: <span id="visitCount">Loading...</span></p>
+    <h2>Admin Panel Login</h2>
+    <div class="login-box">
+        <input type="text" id="username" placeholder="Enter Username" required>
+        <input type="password" id="password" placeholder="Enter Password" required>
+        <button onclick="login()">Login</button>
+    </div>
+
     <script>
-        const db = firebase.database();
-        db.ref('visits').on('value', snapshot => {
-            document.getElementById('visitCount').innerText = snapshot.numChildren();
-        });
+        function login() {
+            var user = document.getElementById("username").value;
+            var pass = document.getElementById("password").value;
+            if (user === "admin" && pass === "admin123") {
+                window.location.href = "dashboard.html";
+            } else {
+                alert("Invalid Credentials!");
+            }
+        }
     </script>
 </body>
 </html>
