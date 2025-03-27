@@ -1,0 +1,88 @@
+# Creating admin panel HTML files
+
+admin_html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        .login-box { width: 300px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; }
+        button { padding: 10px 20px; background-color: green; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Admin Panel Login</h2>
+    <div class="login-box">
+        <input type="text" id="username" placeholder="assiddiqui" required>
+        <input type="password" id="password" placeholder="zainkhan@1234khan" required>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <script>
+        function login() {
+            var user = document.getElementById("username").value;
+            var pass = document.getElementById("password").value;
+            if (user === "admin" && pass === "admin123") {
+                window.location.href = "dashboard.html";
+            } else {
+                alert("Invalid Credentials!");
+            }
+        }
+    </script>
+</body>
+</html>
+"""
+
+dashboard_html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        table { width: 80%; margin: auto; border-collapse: collapse; }
+        th, td { padding: 10px; border: 1px solid #ccc; }
+        th { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+    <h2>Admin Dashboard</h2>
+    <p>Visitor Logs:</p>
+    <table>
+        <tr><th>IP Address</th><th>Timestamp</th></tr>
+        <tbody id="visitorTable"></tbody>
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var visitors = JSON.parse(localStorage.getItem("visitors")) || [];
+            var tableBody = document.getElementById("visitorTable");
+
+            visitors.forEach(visitor => {
+                var row = `<tr><td>${visitor.ip}</td><td>${visitor.time}</td></tr>`;
+                tableBody.innerHTML += row;
+            });
+        });
+    </script>
+</body>
+</html>
+"""
+
+# Writing files to the directory
+with open("/mnt/data/admin.html", "w") as file:
+    file.write(admin_html)
+
+with open("/mnt/data/dashboard.html", "w") as file:
+    file.write(dashboard_html)
+
+# Creating a zip file with updated files
+output_zip_path = "/mnt/data/Updated_Project_With_Admin.zip"
+shutil.make_archive("/mnt/data/Updated_Project_With_Admin", 'zip', "/mnt/data/")
+
+output_zip_path
