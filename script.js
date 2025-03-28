@@ -56,6 +56,64 @@ function extractVideoID(url) {
     let match = url.match(/[?&]v=([^&#]+)/) || url.match(/youtu\.be\/([^?]+)/);
     return match ? match[1] : null;
 }
+// Firebase Config
+const firebaseConfig = {
+    apiKey: "AIzaSyABa8ERq4kkvqbkzHgJ_cXJVW-F-U-wbyU",
+    authDomain: "dork-hub.firebaseapp.com",
+    databaseURL: "https://dork-hub-default-rtdb.firebaseio.com",
+    projectId: "dork-hub",
+    storageBucket: "dork-hub.firebasestorage.app",
+    messagingSenderId: "143650381570",
+    appId: "1:143650381570:web:961e22f165dcd29e0b2c1b"
+};
+firebase.initializeApp(firebaseConfig);
+
+// Function to Log Views
+function logWebsiteVisit() {
+    const db = firebase.database();
+    const visitRef = db.ref('visits');
+    visitRef.push({
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent
+    });
+}
+
+logWebsiteVisit();
+// Load YouTube API
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+var players = [];
+
+function generateVideos() {
+    var videoContainer = document.getElementById("videoContainer");
+    videoContainer.innerHTML = ""; // Clear previous videos
+    players = [];
+
+    let videoUrl = document.getElementById("videoUrl").value;
+    let videoId = extractVideoID(videoUrl);
+
+    if (!videoId) {
+        alert("Please enter a valid YouTube link!");
+        return;
+    }
+
+    let count = document.getElementById("videoCount").value;
+    for (let i = 0; i < count; i++) {
+        let videoBox = document.createElement("div");
+        videoBox.className = "video-box";
+        videoBox.innerHTML = `<iframe id="player${i}" src="https://www.youtube.com/embed/${videoId}?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        videoContainer.appendChild(videoBox);
+    }
+}
+
+// Extract YouTube Video ID from URL
+function extractVideoID(url) {
+    let match = url.match(/[?&]v=([^&#]+)/) || url.match(/youtu\.be\/([^?]+)/);
+    return match ? match[1] : null;
+}
 
 // Initialize YouTube API
 function onYouTubeIframeAPIReady() {
@@ -107,3 +165,4 @@ function applyRandomBehavior(index) {
         applyRandomBehavior(index);
     }, Math.floor(Math.random() * 20000) + 5000);
 }
+
