@@ -46,7 +46,7 @@ function generateVideos() {
     for (let i = 0; i < count; i++) {
         let videoBox = document.createElement("div");
         videoBox.className = "video-box";
-        videoBox.innerHTML = `<iframe id="player${i}" src="https://www.youtube.com/embed/${videoId}?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        videoBox.innerHTML = `<iframe id="player${i}" src="https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1&loop=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
         videoContainer.appendChild(videoBox);
     }
 }
@@ -74,36 +74,52 @@ function onYouTubeIframeAPIReady() {
 // Start Playing & Random Behavior
 function onPlayerReady(index) {
     players[index].playVideo();
+    players[index].setVolume(50); // Ensure volume is on
     applyRandomBehavior(index);
 }
 
 function applyRandomBehavior(index) {
     setTimeout(() => {
-        let actions = ["pause", "play", "volume", "seek"];
+        let actions = ["pause", "play", "volume", "seek", "speed", "mute_toggle"];
         let action = actions[Math.floor(Math.random() * actions.length)];
         
         switch (action) {
             case "pause":
                 players[index].pauseVideo();
-                console.log(`Player ${index} Paused`);
                 break;
             case "play":
                 players[index].playVideo();
-                console.log(`Player ${index} Playing`);
                 break;
             case "volume":
                 let volume = Math.floor(Math.random() * 100);
                 players[index].setVolume(volume);
-                console.log(`Player ${index} Volume: ${volume}`);
                 break;
             case "seek":
                 let duration = players[index].getDuration();
-                let seekTo = Math.floor(Math.random() * duration);
+                let seekTo = Math.floor(Math.random() * duration * 0.75);
                 players[index].seekTo(seekTo, true);
-                console.log(`Player ${index} Seek to: ${seekTo}`);
+                break;
+            case "speed":
+                let speed = [0.75, 1, 1.25, 1.5][Math.floor(Math.random() * 4)];
+                players[index].setPlaybackRate(speed);
+                break;
+            case "mute_toggle":
+                let isMuted = players[index].isMuted();
+                if (isMuted) {
+                    players[index].unMute();
+                } else {
+                    players[index].mute();
+                }
                 break;
         }
 
         applyRandomBehavior(index);
-    }, Math.floor(Math.random() * 20000) + 5000);
+    }, Math.floor(Math.random() * 15000) + 5000);
 }
+
+// Keep video playing in background
+document.addEventListener("visibilitychange", function() {
+    if (!document.hidden) {
+        players.forEach(player => player.playVideo());
+    }
+});
