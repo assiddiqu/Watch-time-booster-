@@ -19,31 +19,7 @@
 </head>
 <body>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const inputField = document.getElementById("youtubeLink");
-            const videoContainer = document.getElementById("videoContainer");
-
-            inputField.addEventListener("input", function () {
-                const url = inputField.value;
-                const videoId = extractYouTubeID(url);
-                
-                if (videoId) {
-                    videoContainer.innerHTML = `
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    `;
-                } else {
-                    videoContainer.innerHTML = "<p style='color: red;'>Invalid YouTube link</p>";
-                }
-            });
-
-            function extractYouTubeID(url) {
-                const regExp = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/;
-                const match = url.match(regExp);
-                return match ? match[1] : null;
-            }
-        });
-    </script>
+    
     <div class="container">
         <h1> CREATE BY SR TECH 
            
@@ -56,31 +32,7 @@
         <input type="number" id="videoCount" min="1" max="10" value="1">
         
         <button onclick="generateVideos()">Start Watching</button>
-        <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const inputField = document.getElementById("youtubeLink");
-            const videoContainer = document.getElementById("videoContainer");
-
-            inputField.addEventListener("input", function () {
-                const url = inputField.value;
-                const videoId = extractYouTubeID(url);
-                
-                if (videoId) {
-                    videoContainer.innerHTML = `
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    `;
-                } else {
-                    videoContainer.innerHTML = "<p style='color: red;'>Invalid YouTube link</p>";
-                }
-            });
-
-            function extractYouTubeID(url) {
-                const regExp = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/;
-                const match = url.match(regExp);
-                return match ? match[1] : null;
-            }
-        });
-        </script>
+        
         <div id="videoContainer"></div>
     </div>
     <h1 style="background-color: black; color: red;">RULES</h1>
