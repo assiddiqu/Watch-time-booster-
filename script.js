@@ -1,5 +1,12 @@
 const firebaseConfig = { 
-    apiKey: "AIzaSyABa8ERq4kkvqbkzHgJ_cXJVW-F-U-wbyU", authDomain: "dork-hub.firebaseapp.com", databaseURL: "https://dork-hub-default-rtdb.firebaseio.com", projectId: "dork-hub", storageBucket: "dork-hub.firebasestorage.app", messagingSenderId: "143650381570", appId: "1:143650381570:web:961e22f165dcd29e0b2c1b" }; firebase.initializeApp(firebaseConfig);
+    apiKey: "AIzaSyABa8ERq4kkvqbkzHgJ_cXJVW-F-U-wbyU", 
+    authDomain: "dork-hub.firebaseapp.com", 
+    databaseURL: "https://dork-hub-default-rtdb.firebaseio.com", 
+    projectId: "dork-hub", 
+    storageBucket: "dork-hub.firebasestorage.app", 
+    messagingSenderId: "143650381570", 
+    appId: "1:143650381570:web:961e22f165dcd29e0b2c1b" }; 
+firebase.initializeApp(firebaseConfig);
 
 // Function to Log Views with Anti-Bot Measures function logWebsiteVisit() { const db = firebase.database(); const visitRef = db.ref('visits');
 
