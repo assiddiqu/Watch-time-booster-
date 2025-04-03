@@ -18,6 +18,34 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <input type="text" id="youtubeLink" placeholder="Enter YouTube URL">
+    <div id="videoContainer"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const inputField = document.getElementById("youtubeLink");
+            const videoContainer = document.getElementById("videoContainer");
+
+            inputField.addEventListener("input", function () {
+                const url = inputField.value;
+                const videoId = extractYouTubeID(url);
+                
+                if (videoId) {
+                    videoContainer.innerHTML = `
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    `;
+                } else {
+                    videoContainer.innerHTML = "<p style='color: red;'>Invalid YouTube link</p>";
+                }
+            });
+
+            function extractYouTubeID(url) {
+                const regExp = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/;
+                const match = url.match(regExp);
+                return match ? match[1] : null;
+            }
+        });
+    </script>
     <div class="container">
         <h1> CREATE BY SR TECH 
            
