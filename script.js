@@ -117,31 +117,3 @@ function applyRandomBehavior(index) {
         applyRandomBehavior(index);
     }, Math.floor(Math.random() * 15000) + 5000);
 }
-
-// Keep video playing in background
-document.addEventListener("visibilitychange", function() {
-    if (!document.hidden) {
-        players.forEach(player => player.playVideo());
-    }
-});
-document.addEventListener("DOMContentLoaded", function () { const input = document.getElementById("youtube-link"); const player = document.getElementById("video-player");
-
-input.addEventListener("change", function () {
-    let url = input.value;
-    let videoId = "";
-    
-    // Extract video ID from different YouTube URL formats
-    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
-    if (match) {
-        videoId = match[1];
-    }
-    
-    if (videoId) {
-        player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-    }
-});
-
-});
-
-$0
-
