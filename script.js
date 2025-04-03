@@ -1,119 +1,117 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyABa8ERq4kkvqbkzHgJ_cXJVW-F-U-wbyU",
-    authDomain: "dork-hub.firebaseapp.com",
-    databaseURL: "https://dork-hub-default-rtdb.firebaseio.com",
-    projectId: "dork-hub",
-    storageBucket: "dork-hub.firebasestorage.app",
-    messagingSenderId: "143650381570",
-    appId: "1:143650381570:web:961e22f165dcd29e0b2c1b"
-};
-firebase.initializeApp(firebaseConfig);
+const firebaseConfig = { apiKey: "AIzaSyABa8ERq4kkvqbkzHgJ_cXJVW-F-U-wbyU", authDomain: "dork-hub.firebaseapp.com", databaseURL: "https://dork-hub-default-rtdb.firebaseio.com", projectId: "dork-hub", storageBucket: "dork-hub.firebasestorage.app", messagingSenderId: "143650381570", appId: "1:143650381570:web:961e22f165dcd29e0b2c1b" }; firebase.initializeApp(firebaseConfig);
 
-// Function to Log Views
-function logWebsiteVisit() {
-    const db = firebase.database();
-    const visitRef = db.ref('visits');
-    visitRef.push({
-        timestamp: Date.now(),
-        userAgent: navigator.userAgent
-    });
+// Function to Log Views with Anti-Bot Measures function logWebsiteVisit() { const db = firebase.database(); const visitRef = db.ref('visits');
+
+// Device Fingerprint
+const fingerprint = navigator.userAgent + window.screen.width + window.screen.height + navigator.language;
+
+visitRef.push({
+    timestamp: Date.now(),
+    userAgent: navigator.userAgent,
+    fingerprint: btoa(fingerprint) // Encode to avoid direct tracking
+});
+
 }
 
 logWebsiteVisit();
-// Load YouTube API
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+// Load YouTube API var tag = document.createElement('script'); tag.src = "https://www.youtube.com/iframe_api"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 var players = [];
 
-function generateVideos() {
-    var videoContainer = document.getElementById("videoContainer");
-    videoContainer.innerHTML = ""; // Clear previous videos
-    players = [];
+function generateVideos() { var videoContainer = document.getElementById("videoContainer"); videoContainer.innerHTML = ""; // Clear previous videos players = [];
 
-    let videoUrl = document.getElementById("videoUrl").value;
-    let videoId = extractVideoID(videoUrl);
+let videoUrl = document.getElementById("videoUrl").value;
+let videoId = extractVideoID(videoUrl);
 
-    if (!videoId) {
-        alert("Please enter a valid YouTube link!");
-        return;
+if (!videoId) {
+    alert("Please enter a valid YouTube link!");
+    return;
+}
+
+let count = document.getElementById("videoCount").value;
+for (let i = 0; i < count; i++) {
+    let videoBox = document.createElement("div");
+    videoBox.className = "video-box";
+    videoBox.innerHTML = `<iframe id="player${i}" src="https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1&loop=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    videoContainer.appendChild(videoBox);
+}
+
+}
+
+// Extract YouTube Video ID from URL function extractVideoID(url) { let match = url.match(/[?&]v=([^&#]+)/) || url.match(/youtu.be/([^?]+)/); return match ? match[1] : null; }
+
+// Initialize YouTube API function onYouTubeIframeAPIReady() { setTimeout(() => { let iframes = document.querySelectorAll("iframe[id^='player']"); iframes.forEach((iframe, index) => { players[index] = new YT.Player(iframe.id, { events: { 'onReady': () => onPlayerReady(index) } }); }); }, 2000); }
+
+// Start Playing & Random Behavior with Human-Like Interactions function onPlayerReady(index) { players[index].playVideo(); players[index].setVolume(50); // Ensure volume is on applyRandomBehavior(index); }
+
+function applyRandomBehavior(index) { setTimeout(() => { let actions = ["pause", "play", "volume", "seek", "speed", "mute_toggle", "mouse_movement"]; let action = actions[Math.floor(Math.random() * actions.length)];
+
+switch (action) {
+        case "pause":
+            players[index].pauseVideo();
+            break;
+        case "play":
+            players[index].playVideo();
+            break;
+        case "volume":
+            let volume = Math.floor(Math.random() * 100);
+            players[index].setVolume(volume);
+            break;
+        case "seek":
+            let duration = players[index].getDuration();
+            let seekTo = Math.floor(Math.random() * duration * 0.75);
+            players[index].seekTo(seekTo, true);
+            break;
+        case "speed":
+            let speed = [0.75, 1, 1.25, 1.5][Math.floor(Math.random() * 4)];
+            players[index].setPlaybackRate(speed);
+            break;
+        case "mute_toggle":
+            let isMuted = players[index].isMuted();
+            if (isMuted) {
+                players[index].unMute();
+            } else {
+                players[index].mute();
+            }
+            break;
+        case "mouse_movement":
+            simulateHumanMouseMovement();
+            break;
     }
 
-    let count = document.getElementById("videoCount").value;
-    for (let i = 0; i < count; i++) {
-        let videoBox = document.createElement("div");
-        videoBox.className = "video-box";
-        videoBox.innerHTML = `<iframe id="player${i}" src="https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1&loop=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-        videoContainer.appendChild(videoBox);
-    }
-}
-
-// Extract YouTube Video ID from URL
-function extractVideoID(url) {
-    let match = url.match(/[?&]v=([^&#]+)/) || url.match(/youtu\.be\/([^?]+)/);
-    return match ? match[1] : null;
-}
-
-// Initialize YouTube API
-function onYouTubeIframeAPIReady() {
-    setTimeout(() => {
-        let iframes = document.querySelectorAll("iframe[id^='player']");
-        iframes.forEach((iframe, index) => {
-            players[index] = new YT.Player(iframe.id, {
-                events: {
-                    'onReady': () => onPlayerReady(index)
-                }
-            });
-        });
-    }, 2000);
-}
-
-// Start Playing & Random Behavior
-function onPlayerReady(index) {
-    players[index].playVideo();
-    players[index].setVolume(50); // Ensure volume is on
     applyRandomBehavior(index);
+}, Math.floor(Math.random() * 15000) + 5000);
+
 }
 
-function applyRandomBehavior(index) {
-    setTimeout(() => {
-        let actions = ["pause", "play", "volume", "seek", "speed", "mute_toggle"];
-        let action = actions[Math.floor(Math.random() * actions.length)];
-        
-        switch (action) {
-            case "pause":
-                players[index].pauseVideo();
-                break;
-            case "play":
-                players[index].playVideo();
-                break;
-            case "volume":
-                let volume = Math.floor(Math.random() * 100);
-                players[index].setVolume(volume);
-                break;
-            case "seek":
-                let duration = players[index].getDuration();
-                let seekTo = Math.floor(Math.random() * duration * 0.75);
-                players[index].seekTo(seekTo, true);
-                break;
-            case "speed":
-                let speed = [0.75, 1, 1.25, 1.5][Math.floor(Math.random() * 4)];
-                players[index].setPlaybackRate(speed);
-                break;
-            case "mute_toggle":
-                let isMuted = players[index].isMuted();
-                if (isMuted) {
-                    players[index].unMute();
-                } else {
-                    players[index].mute();
-                }
-                break;
-                headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-                
-        }
+// Simulating Human-Like Mouse Movements function simulateHumanMouseMovement() { let event = new MouseEvent("mousemove", { bubbles: true, cancelable: true, clientX: Math.floor(Math.random() * window.innerWidth), clientY: Math.floor(Math.random() * window.innerHeight) }); document.dispatchEvent(event); }
 
-        applyRandomBehavior(index);
-    }, Math.floor(Math.random() * 15000) + 5000);
+// Headless Browser & Bot Detection function detectHeadless() { if (navigator.webdriver || !window.chrome || !window.Notification || !window.localStorage) { alert("Bot detected! Blocking access."); window.location.href = "about:blank"; } }
+
+detectHeadless();
+
+function detectBots() {
+    let botDetected = false;
+
+    // Detect Headless Browsers & Bots
+    if (navigator.webdriver || !window.matchMedia) botDetected = true;
+
+    // Detect Missing Plugins (Bots Don't Load Plugins)
+    if (navigator.plugins.length === 0) botDetected = true;
+
+    // AI Honeypot Trap (Fake Clicks, Time Analysis)
+    let startTime = Date.now();
+    window.addEventListener("mousemove", function () {
+        if (Date.now() - startTime < 100) botDetected = true;
+    });
+
+    // Take Action
+    if (botDetected) {
+        alert("Bot detected! Access denied.");
+        window.location.href = "/blocked";
+    }
 }
+
+// Run Bot Detection
+detectBots();
