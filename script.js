@@ -91,27 +91,3 @@ switch (action) {
 
 detectHeadless();
 
-function detectBots() {
-    let botDetected = false;
-
-    // Detect Headless Browsers & Bots
-    if (navigator.webdriver || !window.matchMedia) botDetected = true;
-
-    // Detect Missing Plugins (Bots Don't Load Plugins)
-    if (navigator.plugins.length === 0) botDetected = true;
-
-    // AI Honeypot Trap (Fake Clicks, Time Analysis)
-    let startTime = Date.now();
-    window.addEventListener("mousemove", function () {
-        if (Date.now() - startTime < 100) botDetected = true;
-    });
-
-    // Take Action
-    if (botDetected) {
-        alert("Bot detected! Access denied.");
-        window.location.href = "/blocked";
-    }
-}
-
-// Run Bot Detection
-detectBots();
